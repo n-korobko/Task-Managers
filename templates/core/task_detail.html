@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}
+  <title>{{ task.name }}</title>
+{% endblock %}
+
+{% block content %}
+  <h1>{{ task.name }}</h1>
+
+  <p><strong>Description:</strong></p>
+  <p>{{ task.description }}</p>
+
+  <ul class="list-group mt-3">
+    <li class="list-group-item">
+      Type: {{ task.task_type }}
+    </li>
+    <li class="list-group-item">
+      Priority: {{ task.priority }}
+    </li>
+    <li class="list-group-item">
+      Deadline: {{ task.deadline }}
+    </li>
+    <li class="list-group-item">
+      Status:
+      {% if task.is_completed %}
+        <span class="text-success">Completed</span>
+      {% else %}
+        <span class="text-danger">Pending</span>
+      {% endif %}
+    </li>
+    <li class="list-group-item">
+      Assignees:
+      <ul>
+        {% for worker in task.assignees.all %}
+          <li>{{ worker.username }} ({{ worker.position }})</li>
+        {% endfor %}
+      </ul>
+    </li>
+  </ul>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}
+  <title>All Tasks</title>
+{% endblock %}
+
+{% block content %}
+  <h1>All Tasks</h1>
+
+  {% if task_list %}
+    <table class="table table-striped mt-3">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Priority</th>
+          <th>Deadline</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for task in task_list %}
+          <tr>
+            <td>
+              <a href="{% url 'core:task-detail' task.id %}">
+                {{ task.name }}
+              </a>
+            </td>
+            <td>{{ task.task_type }}</td>
+            <td>{{ task.priority }}</td>
+            <td>{{ task.deadline }}</td>
+            <td>
+              {% if task.is_completed %}
+                <span class="text-success">Completed</span>
+              {% else %}
+                <span class="text-danger">Pending</span>
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>No tasks found.</p>
+  {% endif %}
+{% endblock %}

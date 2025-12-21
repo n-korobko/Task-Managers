@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}
+  <title>My Tasks</title>
+{% endblock %}
+
+{% block content %}
+  <h1>My Tasks</h1>
+
+  <h3 class="mt-4">Pending</h3>
+  {% for task in task_list %}
+    {% if not task.is_completed %}
+      <div class="card mb-2">
+        <div class="card-body">
+          <h5>
+            <a href="{% url 'core:task-detail' task.id %}">
+              {{ task.name }}
+            </a>
+          </h5>
+          <p>Priority: {{ task.priority }}</p>
+          <p>Deadline: {{ task.deadline }}</p>
+        </div>
+      </div>
+    {% endif %}
+  {% empty %}
+    <p>No tasks assigned.</p>
+  {% endfor %}
+
+  <h3 class="mt-4">Completed</h3>
+  {% for task in task_list %}
+    {% if task.is_completed %}
+      <div class="card mb-2 border-success">
+        <div class="card-body">
+          <h5>
+            <a href="{% url 'core:task-detail' task.id %}">
+              {{ task.name }}
+            </a>
+          </h5>
+        </div>
+      </div>
+    {% endif %}
+  {% endfor %}
+{% endblock %}

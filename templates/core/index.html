@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}
+  <title>Task Manager</title>
+{% endblock %}
+
+{% block content %}
+  <h1>Task Manager</h1>
+
+  <ul class="list-group mt-3">
+    <li class="list-group-item">
+      Total tasks: <strong>{{ total_tasks }}</strong>
+    </li>
+    <li class="list-group-item">
+      Completed tasks: <strong>{{ completed_tasks }}</strong>
+    </li>
+    <li class="list-group-item">
+      Pending tasks: <strong>{{ pending_tasks }}</strong>
+    </li>
+  </ul>
+{% endblock %}
