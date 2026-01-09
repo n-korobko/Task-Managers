@@ -3,11 +3,11 @@
 Task Manager is a web application built with Django that allows users to manage tasks with priorities, statuses, and deadlines.
 
 ## Live Demo
-https://task-managers-frq.onrender.com
+https://task-managers-fcrq.onrender.com/
 
-## Test User
+## Test Credentials
 Login: admin  
-Password: admin123
+Password: admin
 
 ## Features
 - User authentication
@@ -50,3 +50,4 @@ pip install -r requirements.txt
 python manage.py migrate
 python manage.py createsuperuser
 python manage.py runserver
+
