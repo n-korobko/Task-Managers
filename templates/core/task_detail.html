@@ -7,6 +7,18 @@
 {% block content %}
   <h1>{{ task.name }}</h1>
 
+  <div class="mb-3">
+    <a class="btn btn-primary"
+       href="{% url 'core:task-update' task.id %}">
+       Edit
+    </a>
+
+    <a class="btn btn-danger"
+       href="{% url 'core:task-delete' task.id %}">
+       Delete
+    </a>
+  </div>
+
   <p><strong>Description:</strong></p>
   <p>{{ task.description }}</p>
 

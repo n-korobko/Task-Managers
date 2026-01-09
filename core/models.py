@@ -37,8 +37,8 @@ class Task(models.Model):
         URGENT = "URGENT", "Urgent"
 
     name = models.CharField(max_length=255)
-    description = models.TextField()
-    deadline = models.DateField()
+    description = models.TextField(blank=True, null=True)
+    deadline = models.DateTimeField()
     is_completed = models.BooleanField(default=False)
 
     priority = models.CharField(

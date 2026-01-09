@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Count, Q
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -10,16 +11,17 @@ from core.models import Task
 
 @login_required
 def index(request: HttpRequest) -> HttpResponse:
-    total_tasks = Task.objects.count()
-    completed_tasks = Task.objects.filter(is_completed=True).count()
-    pending_tasks = Task.objects.filter(is_completed=False).count()
+    stats = Task.objects.aggregate(
+        total=Count("id"),
+        completed=Count("id", filter=Q(is_completed=True)),
+        pending=Count("id", filter=Q(is_completed=False)),
+    )
 
-    context = {
-        "total_tasks": total_tasks,
-        "completed_tasks": completed_tasks,
-        "pending_tasks": pending_tasks,
-    }
-    return render(request, "core/index.html", context=context)
+    return render(
+        request,
+        "core/index.html",
+        context={"stats": stats},
+    )
 
 
 class TaskListView(LoginRequiredMixin, generic.ListView):
@@ -49,5 +51,34 @@ class TaskDetailView(LoginRequiredMixin, generic.DetailView):
 
 class TaskCreateView(LoginRequiredMixin, generic.CreateView):
     model = Task
-    fields = "__all__"
+    fields = [
+        "name",
+        "description",
+        "deadline",
+        "priority",
+        "task_type",
+        "assignees",
+        "is_completed",
+    ]
     success_url = reverse_lazy("core:task-list")
+
+
+class TaskUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Task
+    fields = [
+        "name",
+        "description",
+        "deadline",
+        "priority",
+        "task_type",
+        "assignees",
+        "is_completed",
+    ]
+    template_name = "core/task_form.html"
+    success_url = reverse_lazy("core:my-task-list")
+
+
+class TaskDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Task
+    template_name = "core/task_confirm_delete.html"
+    success_url = reverse_lazy("core:my-task-list")
