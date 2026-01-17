@@ -5,23 +5,22 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
+from django.views.generic import TemplateView
 
 from core.models import Task
 
 
-@login_required
-def index(request: HttpRequest) -> HttpResponse:
-    stats = Task.objects.aggregate(
-        total=Count("id"),
-        completed=Count("id", filter=Q(is_completed=True)),
-        pending=Count("id", filter=Q(is_completed=False)),
-    )
+class IndexView(LoginRequiredMixin, TemplateView):
+    template_name = "core/index.html"
 
-    return render(
-        request,
-        "core/index.html",
-        context={"stats": stats},
-    )
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["stats"] = Task.objects.aggregate(
+            total=Count("id"),
+            completed=Count("id", filter=Q(is_completed=True)),
+            pending=Count("id", filter=Q(is_completed=False)),
+        )
+        return context
 
 
 class TaskListView(LoginRequiredMixin, generic.ListView):
