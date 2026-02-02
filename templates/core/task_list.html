@@ -7,6 +7,11 @@
 {% block content %}
   <h1>All Tasks</h1>
 
+  <a href="{% url 'core:task-create' %}"
+     class="btn btn-success mb-3">
+    + Create task
+  </a>
+
   {% if task_list %}
     <table class="table table-striped mt-3">
       <thead>
